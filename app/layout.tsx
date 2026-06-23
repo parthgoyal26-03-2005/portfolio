@@ -25,12 +25,27 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://parthspace.in"),
   title: `${SITE.name} | ${SITE.tagline}`,
   description:
     "Cinematic MERN stack developer portfolio — high-performance web experiences, glassmorphism, and immersive digital architecture.",
   icons: {
     icon: "/parthlogo.png",
     apple: "/parthlogo.png",
+  },
+  openGraph: {
+    title: "Parth Goyal | Full-Stack Developer",
+    description:
+      "Crafting immersive frontends & scalable backend systems — from cinematic UIs to production-grade APIs.",
+    url: "https://parthspace.in",
+    siteName: "parthspace.in",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Parth Goyal | Full-Stack Developer",
+    description:
+      "Crafting immersive frontends & scalable backend systems — from cinematic UIs to production-grade APIs.",
   },
 };
 
