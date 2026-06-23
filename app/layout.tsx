@@ -43,9 +43,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Parth Goyal | Full-Stack Developer",
+
+    title: "Parth Goyal - Portfolio",
+
     description:
-      "Crafting immersive frontends & scalable backend systems — from cinematic UIs to production-grade APIs.",
+      "Full-Stack Developer building scalable web applications, API-driven systems & modern digital experiences.",
+
+    images: ["https://www.parthspace.in/og-image.png"],
   },
 };
 
