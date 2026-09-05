@@ -17,7 +17,6 @@ export default function Home() {
         <ExperienceSection />
         <AboutSection />
       </main>
-
       <Footer />
     </>
   );

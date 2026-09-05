@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Sora, Geist } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/app/lib/data";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -64,6 +65,7 @@ export default function RootLayout({
         className={`${sora.variable} ${inter.variable} ${jetbrains.variable} min-h-screen antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

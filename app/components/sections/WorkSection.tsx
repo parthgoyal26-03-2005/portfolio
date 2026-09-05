@@ -1,6 +1,6 @@
 "use client";
 
-import { ProjectBentoGrid } from "@/app/components/projects/ProjectBentoGrid";
+import { ProjectSlider } from "@/app/components/projects/ProjectSlider";
 import { Section } from "@/app/components/layout/Section";
 import { SectionCTA } from "@/app/components/layout/SectionCTA";
 import { SectionHeader } from "@/app/components/ui/SectionHeader";
@@ -14,10 +14,10 @@ export function WorkSection() {
         title="Featured"
         highlight="Projects"
         description="Selected works engineered for performance, immersion, and pixel-perfect craft."
-        aside="( Selected Works 2024 )"
+        aside="( Always Building )"
       />
 
-      <ProjectBentoGrid />
+      <ProjectSlider />
 
       <SectionCTA
         className="mt-20 md:mt-28"

@@ -1,7 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
@@ -19,7 +18,6 @@ import { Section } from "@/app/components/layout/Section";
 import { SectionHeader } from "@/app/components/ui/SectionHeader";
 import { GlassCard } from "@/app/components/ui/GlassCard";
 import { Button } from "@/app/components/ui/Button";
-import CardSwap, { Card } from "@/components/CardSwap";
 
 const coreIcons = {
   database: Database,
@@ -27,28 +25,6 @@ const coreIcons = {
   sparkles: Sparkles,
   code: Code2,
 } as const;
-
-/* ── Inline styles for CardSwap experience cards ── */
-const CARD_STYLE: CSSProperties = {
-  background: "rgba(18,17,17,0.92)",
-  border: "1px solid rgba(210,187,255,0.14)",
-  backdropFilter: "blur(16px)",
-  borderRadius: "16px",
-  padding: "1.4rem",
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.35rem",
-  overflow: "hidden",
-};
-
-function cardStyleForWidth(w: number): CSSProperties {
-  return {
-    ...CARD_STYLE,
-    padding: w < 300 ? "0.65rem" : w < 360 ? "0.9rem" : "1.4rem",
-    borderRadius: w < 360 ? "12px" : "16px",
-    gap: w < 360 ? "0.2rem" : "0.35rem",
-  };
-}
 
 /* ── Brand icons for Core Stack items (Simple Icons CDN) ── */
 const CORE_BRAND_ICONS: Record<string, { slug: string; color: string } | null> = {
@@ -88,19 +64,6 @@ export function ExperienceSection() {
   /* ── Technical Arsenal toggle state ── */
   const [fallingMode, setFallingMode] = useState(false);
   const [fallingKey, setFallingKey] = useState(0);
-
-  /* Responsive CardSwap width */
-  const swapContainerRef = useRef<HTMLDivElement>(null);
-  const [swapWidth, setSwapWidth] = useState(400);
-  useEffect(() => {
-    const el = swapContainerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([entry]) => {
-      setSwapWidth(Math.min(400, Math.floor(entry.contentRect.width)));
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   const launchPhysics = () => {
     setFallingKey((k) => k + 1);
@@ -293,156 +256,60 @@ export function ExperienceSection() {
           </GlassCard>
         </motion.div>
 
-        {/* ── Professional Chronicles — CardSwap ── */}
+        {/* Professional Chronicles */}
         <motion.div variants={bentoCardReveal} className="md:col-span-12">
-          <GlassCard padding="md" className="relative sm:p-10">
-            <div className="relative z-10 flex flex-col gap-10 lg:flex-row lg:gap-12">
-              {/* Left: title + compact list */}
-              <div className="lg:w-2/5">
-                <h3 className="font-display text-2xl font-bold text-text-primary sm:text-3xl lg:sticky lg:top-36">
-                  Professional <br />
-                  <span className="text-secondary">Chronicles.</span>
-                </h3>
-                <p className="mt-3 text-sm text-text-muted sm:text-base">
-                  A legacy of building digital products that scale.
-                </p>
-
-                {/* Quick-glance list */}
-                <div className="mt-6 space-y-4">
-                  {EXPERIENCE.map((job) => (
-                    <div key={job.role} className="flex items-start gap-3">
-                      <div
-                        className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${
-                          job.accent === "primary"
-                            ? "bg-primary shadow-[0_0_8px_rgba(124,58,237,0.8)]"
-                            : job.accent === "secondary"
-                              ? "bg-secondary shadow-[0_0_8px_rgba(59,130,246,0.8)]"
-                              : "bg-text-muted"
-                        }`}
-                      />
-                      <div>
-                        <p className="font-display text-sm font-semibold text-on-surface">
-                          {job.role}
-                        </p>
-                        <p className="font-mono text-xs text-secondary">
-                          {job.company}
-                        </p>
-                        <p className="mt-0.5 font-mono text-[11px] text-text-muted">
-                          {job.period}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right: CardSwap — contained via overflow-hidden + CSS reposition */}
-              <div
-                ref={swapContainerRef}
-                className="chronicles-swap relative overflow-hidden rounded-2xl border border-glass-stroke/40 bg-surface-container/20 lg:w-3/5"
-                style={{
-                  minHeight:
-                    swapWidth < 300 ? "220px" : swapWidth < 360 ? "260px" : "400px",
-                }}
-              >
-                <CardSwap
-                  width={swapWidth}
-                  height={swapWidth < 300 ? 150 : swapWidth < 360 ? 190 : 280}
-                  cardDistance={swapWidth < 300 ? 28 : swapWidth < 360 ? 36 : 50}
-                  verticalDistance={swapWidth < 300 ? 32 : swapWidth < 360 ? 42 : 60}
-                  delay={3500}
-                  pauseOnHover
-                  easing="elastic"
-                >
-                  {EXPERIENCE.map((job) => (
-                    <Card key={job.role} style={cardStyleForWidth(swapWidth)}>
-                      <span
-                        style={{
-                          fontFamily: "monospace",
-                          fontSize: swapWidth < 300 ? "8px" : "10px",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.2em",
-                          color:
-                            job.accent === "primary"
-                              ? "#d2bbff"
-                              : job.accent === "secondary"
-                                ? "#adc6ff"
-                                : "#94a3b8",
-                        }}
-                      >
-                        {job.period}
-                      </span>
-                      <h4
-                        style={{
-                          fontFamily: "Sora, system-ui, sans-serif",
-                          fontSize: swapWidth < 300 ? "13px" : swapWidth < 360 ? "15px" : "17px",
-                          fontWeight: 700,
-                          color: "#f8fafc",
-                          lineHeight: 1.3,
-                          marginTop: "4px",
-                        }}
-                      >
-                        {job.role}
-                      </h4>
-                      <p
-                        style={{
-                          fontFamily: "monospace",
-                          fontSize: swapWidth < 300 ? "9px" : "11px",
-                          color:
-                            job.accent === "secondary" ? "#adc6ff" : "#d2bbff",
-                        }}
-                      >
-                        {job.company}
-                      </p>
-                      <p
-                        style={{
-                          fontSize: swapWidth < 300 ? "9px" : "11px",
-                          lineHeight: 1.65,
-                          color: "#94a3b8",
-                          marginTop: swapWidth < 360 ? "4px" : "6px",
-                          overflow: "hidden",
-                          display: "-webkit-box",
-                          WebkitLineClamp: swapWidth < 360 ? 3 : 4,
-                          WebkitBoxOrient: "vertical",
-                        }}
-                      >
-                        {job.description}
-                      </p>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: "4px",
-                          marginTop: swapWidth < 360 ? "5px" : "8px",
-                        }}
-                      >
-                        {job.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            style={{
-                              background:
-                                job.accent === "primary"
-                                  ? "rgba(124,58,237,0.18)"
-                                  : "rgba(59,130,246,0.15)",
-                              color:
-                                job.accent === "primary" ? "#d2bbff" : "#adc6ff",
-                              borderRadius: "4px",
-                              padding: swapWidth < 300 ? "1px 5px" : "2px 7px",
-                              fontSize: swapWidth < 300 ? "8px" : "10px",
-                              fontFamily: "monospace",
-                            }}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </Card>
-                  ))}
-                </CardSwap>
-              </div>
+          <GlassCard padding="md" className="sm:p-10">
+            <div className="max-w-2xl">
+              <h3 className="font-display text-2xl font-bold text-text-primary sm:text-3xl">
+                Professional <span className="text-secondary">Chronicles.</span>
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-text-muted sm:text-base">
+                A focused timeline of the work, learning, and leadership behind my development journey.
+              </p>
             </div>
 
-            <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-secondary/5 blur-[120px]" />
+            <div className="mt-8 grid gap-4 sm:mt-10 md:grid-cols-3 md:gap-5">
+              {EXPERIENCE.map((job, index) => {
+                const tone = job.accent === "primary" ? "primary" : job.accent === "secondary" ? "secondary" : "muted";
+                return (
+                  <article
+                    key={job.role}
+                    className="rounded-xl border border-glass-stroke bg-surface-container-lowest p-5 sm:p-6"
+                  >
+                    <div className="mb-5 flex items-center gap-3">
+                      <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border font-mono text-xs ${
+                        tone === "primary" ? "border-primary/40 text-primary" : tone === "secondary" ? "border-secondary/40 text-secondary" : "border-glass-stroke text-text-muted"
+                      }`}>
+                        0{index + 1}
+                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">
+                        {job.period}
+                      </span>
+                    </div>
+
+                    <h4 className="font-display text-lg font-semibold leading-snug text-on-surface sm:text-xl">
+                      {job.role}
+                    </h4>
+                    <p className={`mt-2 font-mono text-xs leading-relaxed ${
+                      tone === "primary" ? "text-primary" : tone === "secondary" ? "text-secondary" : "text-on-surface-variant"
+                    }`}>
+                      {job.company}
+                    </p>
+                    <p className="mt-4 text-sm leading-6 text-text-muted">
+                      {job.description}
+                    </p>
+
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {job.tags.map((tag) => (
+                        <span key={tag} className="rounded-full border border-glass-stroke px-2.5 py-1 font-mono text-[10px] text-on-surface-variant">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           </GlassCard>
         </motion.div>
 
